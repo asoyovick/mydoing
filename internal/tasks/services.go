@@ -53,3 +53,20 @@ func (s *TaskService) GetTaskByID(id int) (*ServiceTask, error) {
 	}
 	return nil, fmt.Errorf("task with ID %d not found", id)
 }
+
+// ListTasks returns all tasks tracked by the sevice
+func (s *TaskService) ListTaskbyID() []*ServiceTask {
+	return s.tasks
+}
+
+// UpdateTask update the tasks fields.
+
+func (s *TaskService) UpdateTask(id int, title, description, goal string, deadline time.Time) error {
+	for _, st := range s.tasks {
+		if st.ID == id {
+			st.Task.UpdateTask(title, description, goal, deadline)
+			return nil
+		}
+	}
+	return fmt.Errorf("task with ID %d not found", id)
+}
