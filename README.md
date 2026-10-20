@@ -1,157 +1,263 @@
 # MyDoing
 
-**A goal-driven command-line task manager.**
+**A goal-driven task manager built with Go.**
 
-MyDoing is a CLI-based application that helps you turn goals into actionable tasks and track your progress toward achieving them.
+MyDoing is a command-line application designed to connect everyday tasks with meaningful goals. It helps users organize their objectives, break them into actionable tasks, and track progress toward the outcomes they want to achieve.
 
-Instead of managing tasks in isolation, MyDoing connects tasks to the goals they support, making it easier to understand what needs to be done and how your completed work contributes to your objectives.
+Rather than treating tasks as isolated items, MyDoing focuses on the relationship between what you do and what you want to accomplish.
 
 ## Table of Contents
 
 - [Overview](#overview)
+- [Core Concepts](#core-concepts)
 - [Features](#features)
 - [How It Works](#how-it-works)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Example Workflow](#example-workflow)
 - [Project Structure](#project-structure)
 - [Technology Stack](#technology-stack)
-- [Future Improvements](#future-improvements)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Development](#development)
+- [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Overview
 
-A to-do list helps you remember tasks. MyDoing aims to help you connect those tasks to something bigger: your goals.
+Traditional to-do lists help you remember what needs to be done. MyDoing takes a goal-oriented approach by connecting tasks to the objectives they support.
 
-For example, if your goal is to learn Go, you could create tasks such as:
+For example, imagine your goal is to become proficient in Go.
 
-- Learn Go variables and data types.
-- Practice loops and conditionals.
-- Build a small CLI application.
-- Complete a Go programming project.
+You could break that goal into tasks such as:
 
-By linking tasks to a goal, MyDoing can help you track the work contributing to that goal.
+- Learn Go fundamentals.
+- Practice loops, functions, and data structures.
+- Build command-line applications.
+- Complete a larger Go project.
+
+MyDoing is designed to help organize these tasks and track how they contribute to the overall goal.
+
+## Core Concepts
+
+### Goals
+
+Goals represent the outcomes you want to achieve. They provide direction and context for your work.
+
+### Tasks
+
+Tasks represent the individual actions required to make progress toward a goal. Linking tasks to goals helps keep daily work aligned with larger objectives.
+
+### Objectives and Key Results (OKRs)
+
+MyDoing includes a dedicated OKR module for organizing objectives and key results. OKRs provide a framework for defining desired outcomes and measuring progress toward them.
+
+### Progress and Evidence
+
+The progress subsystem contains components for progress evaluation, scoring, and evidence. These components form part of the project's approach to tracking progress.
 
 ## Features
 
-The project is designed around the following capabilities:
+The project structure includes components for the following capabilities:
 
-- **Goal management:** Organize work around specific objectives.
-- **Task management:** Break goals into smaller, actionable tasks.
-- **Task-goal relationships:** Link tasks to the goals they support.
-- **Progress tracking:** Track task completion and reflect progress toward goals.
+- **Goal management:** Goal models and associated services.
+- **Task management:** Task models and task-related services.
+- **OKR support:** Objectives, key results, and related services.
+- **Progress evaluation:** A progress engine and scoring components.
+- **Evidence handling:** Components for working with progress evidence.
+- **Persistent storage:** SQLite integration.
+- **External integrations:** Dedicated areas for filesystem, Git, and GitHub integrations.
 
-*Note: Confirm each feature against the current implementation before treating this list as a description of the finished application.*
+The availability and maturity of individual features depend on their current implementation.
 
 ## How It Works
 
-MyDoing revolves around three concepts:
+MyDoing is organized around the relationship between goals, tasks, and measurable progress.
 
-1. **Goals:** The outcomes you want to achieve.
-2. **Tasks:** The individual actions required to make progress.
-3. **Progress:** The completion status of tasks associated with a goal.
+The intended workflow is:
 
-The intended relationship is:
+1. Define a goal or objective.
+2. Break it down into actionable tasks.
+3. Associate tasks with the goals they support.
+4. Track task completion and relevant evidence.
+5. Evaluate progress toward the intended outcome.
 
-`Goal → Linked Tasks → Task Completion → Goal Progress`
+The central idea is simple: **your tasks should have a purpose, and your progress should reflect the work you do toward your goals.**
 
-This relationship connects everyday actions to larger objectives.
+## Project Structure
 
-## Installation
+MyDoing uses a modular Go project structure that separates domain logic, storage, configuration, and integrations.
+
+```text
+mydoing/
+├── cmd/
+│   └── main.go
+├── internal/
+│   ├── config/
+│   │   └── config.go
+│   ├── goals/
+│   │   ├── goal.go
+│   │   └── service.go
+│   ├── integrations/
+│   │   ├── filesystem/
+│   │   ├── git/
+│   │   └── github/
+│   ├── okr/
+│   │   ├── keyresult.go
+│   │   ├── objective.go
+│   │   └── service.go
+│   ├── storage/
+│   │   ├── progress/
+│   │   │   ├── engine.go
+│   │   │   ├── evidence.go
+│   │   │   └── scoring.go
+│   │   └── sqlite.go
+│   └── tasks/
+│       ├── services.go
+│       └── task.go
+├── go.mod
+└── README.md
+```
+
+### Directory Responsibilities
+
+| Path | Purpose |
+|---|---|
+| `cmd/` | Application entry point |
+| `internal/config/` | Application configuration |
+| `internal/goals/` | Goal models and services |
+| `internal/tasks/` | Task models and services |
+| `internal/okr/` | Objectives, key results, and services |
+| `internal/storage/` | Storage implementation |
+| `internal/storage/progress/` | Progress engine, scoring, and evidence |
+| `internal/integrations/filesystem/` | Filesystem integration components |
+| `internal/integrations/git/` | Git integration components |
+| `internal/integrations/github/` | GitHub integration components |
+| `go.mod` | Go module definition and dependencies |
+
+The `internal/` directory also establishes package boundaries by restricting imports from outside the enclosing Go module's applicable directory tree.
+
+## Technology Stack
+
+- **Go:** Application implementation.
+- **SQLite:** Database technology referenced by the storage implementation.
+- **Git:** Source control and the basis for the dedicated Git integration.
+- **GitHub:** Platform targeted by the dedicated GitHub integration.
+
+The exact libraries, integration behavior, and database configuration should be documented as their implementation is verified.
+
+## Getting Started
 
 ### Prerequisites
 
-- Git
-- The programming language runtime or compiler required by the project
+- Go installed and configured.
+- Git installed.
+- A working copy of the MyDoing repository.
 
 ### Clone the repository
 
 ```bash
 git clone <repository-url>
-cd <repository-directory>
+cd mydoing
 ```
 
-### Build and run
+Replace `<repository-url>` with the actual repository URL.
 
-Replace the commands below with the actual build and execution commands for the project.
+### Build the application
+
+From the repository root, run:
 
 ```bash
-# Build the application
-<build-command>
-
-# Run the application
-<run-command>
+go build ./cmd
 ```
+
+This checks and builds the application package. The resulting executable location depends on the Go build command and package configuration.
+
+### Run the application
+
+The application entry point is located at `cmd/main.go`. The exact runtime command and any required configuration should be documented after verifying the current startup implementation.
 
 ## Usage
 
-MyDoing is designed to be operated through a command-line interface.
+MyDoing is intended to be operated through a command-line interface.
 
-The exact commands depend on the current implementation. Once verified, document the commands for:
+The usage documentation should cover the commands supported by the current implementation, including:
 
-- Displaying available commands.
+- Viewing available commands or help.
 - Creating and listing goals.
 - Creating tasks and linking them to goals.
 - Updating task status.
-- Viewing goal progress.
+- Inspecting goal progress.
+- Managing objectives and key results.
 
-Example command format (illustrative only):
+These are documentation targets, not a claim that every command is already implemented.
 
-```text
-mydoing <command> [arguments]
+Once the command interface is confirmed, this section should include real commands, arguments, example output, and relevant error cases.
+
+## Development
+
+### Verify the project
+
+Run the Go test suite:
+
+```bash
+go test ./...
 ```
 
-Replace this example with real commands and their actual output.
+Build all packages:
 
-## Example Workflow
+```bash
+go build ./...
+```
 
-Imagine you want to complete a personal project.
+Format Go source files:
 
-1. Create a goal describing the intended outcome.
-2. Break the goal into smaller tasks.
-3. Link each task to the goal.
-4. Update each task as work progresses.
-5. Review the goal's progress.
+```bash
+gofmt -w .
+```
 
-This workflow demonstrates the central idea behind MyDoing: manage tasks in the context of the goals they serve.
+Run these commands from the repository root. Formatting changes should be reviewed before committing.
 
-## Project Structure
+### Design principles
 
-Add the actual repository structure here once the source code organization has been confirmed.
+Development should preserve clear boundaries between:
 
-For example, a CLI project might separate command handling, business logic, and data storage into different packages. The documentation should reflect the structure MyDoing actually uses.
+- Domain models and business logic.
+- Task and goal management.
+- Progress evaluation and scoring.
+- Persistent storage.
+- External integrations.
 
-## Technology Stack
+This separation makes the code easier to test, maintain, and extend as MyDoing grows.
 
-Document the languages, libraries, and tools used to build MyDoing.
+## Roadmap
 
-- Programming language: To be confirmed.
-- CLI framework or standard library: To be confirmed.
-- Data storage: To be confirmed.
+Potential areas for future development include:
 
-## Future Improvements
+- A complete goal and task management workflow.
+- Automatic goal progress recalculation when linked tasks change.
+- Clear progress summaries and reporting.
+- Evidence-based progress evaluation.
+- Deeper Git and GitHub integrations.
+- Improved CLI help and command documentation.
+- Automated tests for goal, task, and progress logic.
 
-Potential improvements, depending on the project's current state, include:
-
-- Goal progress summaries.
-- Task priorities and deadlines.
-- Filtering and searching tasks.
-- Persistent storage across application restarts.
-- Improved command help and error messages.
-
-These are possible directions, not claims about existing functionality.
+These are potential directions and should be adjusted to reflect the project's existing implementation and priorities.
 
 ## Contributing
 
-Contributions and suggestions are welcome.
+Contributions, bug reports, and suggestions are welcome.
 
 1. Fork the repository.
 2. Create a branch for your changes.
 3. Make a focused change.
-4. Test your changes.
-5. Open a pull request describing what changed and why.
+4. Run the relevant tests.
+5. Open a pull request explaining the change.
+
+Keep changes focused, preserve the project's package boundaries, and document any new commands or behavior.
 
 ## License
 
-Add the project's chosen license here. If the project has not been licensed yet, choose a license before inviting others to reuse or distribute the code.
+The project license has not been specified here. Add the chosen license and its corresponding file before distributing the project under an open-source license.
+
+---
+
+**MyDoing: Connect your tasks to your goals. Track the work that moves you forward.**
