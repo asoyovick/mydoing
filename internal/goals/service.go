@@ -15,6 +15,8 @@ type ServiceGoal struct {
 type GoalService struct {
 	goal   []*ServiceGoal
 	NextID int
+	// Get goals with ID tracks the that are sav
+	// Get goals with ID tracks the that are sav
 }
 
 // create a new goal-service
@@ -30,7 +32,7 @@ func (s *GoalService) CreateServiceGoal(description string, status string, timel
 	// construct new goal
 	rawGoal := NewGoal(description, status, timeline)
 	if rawGoal == nil {
-		return nil, fmt.Errorf("failed to create a new task")
+		return nil, fmt.Errorf("failed to create a new goal, all the fields cannot be empty")
 	}
 	// wrap created the newly created goal with a unique ID.
 	serviceGoal := &ServiceGoal{
@@ -51,4 +53,9 @@ func (s *GoalService) GetGoalByID(id int) (*ServiceGoal, error) {
 		}
 	}
 	return nil, fmt.Errorf("goal ID %d is not found")
+}
+
+// list all the goals by ID
+func (s *GoalService) ListGoalByID() []*ServiceGoal {
+	return s.goal
 }
